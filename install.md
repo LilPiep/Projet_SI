@@ -69,3 +69,14 @@ Run the little test program with
 ```bash
 ./project
 ```
+
+To download Glad, go to this website : 
+https://glad.dav1d.de/
+
+And choose : 
+Language : C/C++ 
+Specification : OpenGL
+API : gl : Version 3.3
+Profile : Core
+
+Then generate the .zip file and include the files like I did in the Librairies folder and add glad.c in the your main folder
