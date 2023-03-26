@@ -13,12 +13,13 @@
 
 // Verices coordinates
     GLfloat vertices[] = {
-        -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,
-        -0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
-        0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
-        0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f
+        // Positions          // Colors
+        -0.5f,  -0.5f * float(sqrt(3)) / 3,     0.0f,   0.8f, 0.3f, 0.0f,
+        0.5f,   -0.5f * float(sqrt(3)) / 3,     0.0f,   0.8f, 0.6f, 0.1f,
+        0.0f,   0.5f * float(sqrt(3)) * 2 / 3,  0.0f,   1.0f, 0.5f, 0.3f,
+        -0.25f, 0.5f * float(sqrt(3)) / 6,      0.0f,   0.7f, 0.5f, 0.3f,
+        0.25f,  0.5f * float(sqrt(3)) / 6,      0.0f,   0.8f, 0.4f, 0.15f,
+        0.0f,   -0.5f * float(sqrt(3)) / 3,     0.0f,   0.9f, 0.3f, 0.2f
     };
 
     GLuint indices[] = {
@@ -67,11 +68,14 @@ int main(){
     EBO EBO1(indices, sizeof(indices));
 
     // Links VBO to VAO
-    VAO1.LinkVBO(VBO1, 0);
+    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+    VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     // Unbiinding all the buffers
     VAO1.Unbind();
     VBO1.Unbind();
     EBO1.Unbind();
+
+    GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
     // Main loop
     while (!glfwWindowShouldClose(window)) 
@@ -82,6 +86,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
         // Tell OpenGL to use the shader program
         shaderProgram.Activate();
+        glUniform1f(uniID, 0.5f); // Very important to type this AFTER shaderProgram.Activate()
         VAO1.Bind();
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
