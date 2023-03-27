@@ -9,6 +9,7 @@
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
+#include "include/texture.h"
 
 #include "include/VBO.h"
 #include "include/VAO.h"
@@ -56,6 +57,7 @@ int main(){
         return -1;
     } 
 
+    // Introduce the window into the current context
     glfwMakeContextCurrent(window);
 
     //Init glad
@@ -89,34 +91,10 @@ int main(){
 
     // Texture
 
-    int widthImg, heightImg, numColCh;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char* bytes = stbi_load("shrek.png", &widthImg, &heightImg, &numColCh, 0);
+    Texture rockTex("shrek.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	rockTex.texUnit(shaderProgram, "tex0", 0);
 
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    // float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    // glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(bytes);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    GLuint tex0Uni = glGetUniformLocation(shaderProgram.ID, "tex0");
-    shaderProgram.Activate();
-    glUniform1i(tex0Uni, 0);
-
+    // Little animation for our pyramid
     float rotation = 0.0f;
     double prevTime = glfwGetTime();
 
@@ -125,8 +103,8 @@ int main(){
     // Main loop
     while (!glfwWindowShouldClose(window)) 
     {
-        //Background color
-        glClearColor(0.2f, 0.0f, 0.3f, 1.0f);
+        //Background color, i want to make it sky blue
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Tell OpenGL to use the shader program
@@ -142,11 +120,12 @@ int main(){
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 proj = glm::mat4(1.0f);
 
+        // Assigns different transformations to each matrix
         model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-
         view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
         proj = glm::perspective(glm::radians(45.0f), (float)(width/height), 0.1f, 100.0f);
 
+        // Outputs the matrices into the Vertex Shader
         int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); 
         int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
@@ -155,7 +134,7 @@ int main(){
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj)); 
 
         glUniform1f(uniID, 0.5f); // Very important to type this AFTER shaderProgram.Activate()
-        glBindTexture(GL_TEXTURE_2D, texture);
+        rockTex.Bind();
         VAO1.Bind();
         glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
@@ -166,7 +145,7 @@ int main(){
     VAO1.Delete();
     VBO1.Delete();
     EBO1.Delete();
-    glDeleteTextures(1, &texture);
+    rockTex.Delete();
     shaderProgram.Delete();
 
     glfwDestroyWindow(window);
