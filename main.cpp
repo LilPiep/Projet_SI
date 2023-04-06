@@ -100,6 +100,17 @@ int main(){
     Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
     // Main loop
+
+    // Print in the console the keys we can use and their functions
+    std::cout << "Press ESC to exit" << std::endl;
+    std::cout << "Press Z to move forward" << std::endl;  
+    std::cout << "Press S to move backward" << std::endl;
+    std::cout << "Press Q to move left" << std::endl;
+    std::cout << "Press D to move right" << std::endl;
+    std::cout << "Press space to move up" << std::endl;
+    std::cout << "Press left ctrl to move down" << std::endl;
+    std::cout << "Press left mouse button to move the camera" << std::endl;
+
     while (!glfwWindowShouldClose(window)) 
     {
         //Background color, i want to make it sky blue
