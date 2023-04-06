@@ -94,5 +94,5 @@ vec4 spotLight()
 void main()
 {
 	// outputs final color
-	FragColor = direcLight();
+	FragColor = pointLight();
 }

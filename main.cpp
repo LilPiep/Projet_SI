@@ -83,6 +83,22 @@ GLuint lightIndices[] =
 
 //------------------------------------------------------------------------------------------------------------------------------------//
 
+Vertex islandVertices[] =
+{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-5.0f, 0.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-5.0f, 0.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 5.0f, 0.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	Vertex{glm::vec3( 5.0f, 0.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
+};
+
+GLuint islandIndices[] =
+{
+	0, 1, 2,
+	0, 2, 3,
+};
+
+//------------------------------------------------------------------------------------------------------------------------------------//
+
 int main(){
 
     // Initialize GLFW
@@ -118,6 +134,10 @@ int main(){
     Texture textures[]{
         Texture("rock.jpg", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
     };
+
+	Texture islandTextures[]{
+		Texture("grass.jpg", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE),
+	};
 
     //------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -165,6 +185,15 @@ int main(){
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
+    // Island Mesh
+	std::vector <Vertex> islandVerts(islandVertices, islandVertices + sizeof(islandVertices) / sizeof(Vertex));
+	std::vector <GLuint> islandInd(islandIndices, islandIndices + sizeof(islandIndices) / sizeof(GLuint));
+	std::vector <Texture> islandTex(islandTextures, islandTextures + sizeof(islandTextures) / sizeof(Texture));
+
+	Mesh island(islandVerts, islandInd, islandTex);
+
     //------------------------------------------------------------------------------------------------------------------------------------//
 
     glEnable(GL_DEPTH_TEST); // Enable the Depth Buffer, allows us to see objects in front of others 
@@ -173,7 +202,7 @@ int main(){
 
     // Camera
 
-    Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+    Camera camera(width, height, glm::vec3(0.0f, 0.5f, 2.0f));
 
     //------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -203,6 +232,7 @@ int main(){
 
         // Draws different meshes
 		volcano.Draw(shaderProgram, camera);
+		island.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
         
         glfwSwapBuffers(window);
