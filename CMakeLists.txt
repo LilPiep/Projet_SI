@@ -13,7 +13,7 @@ add_subdirectory(/home/pierrick/glfw /home/pierrick/glfw/src)
 
 FIND_PACKAGE(OpenGL REQUIRED)
 
-SET(SOURCE_FILES main.cpp glad.c EBO.cpp shaderClass.cpp VAO.cpp VBO.cpp stb.cpp texture.cpp camera.cpp)
+SET(SOURCE_FILES main.cpp glad.c EBO.cpp shaderClass.cpp VAO.cpp VBO.cpp stb.cpp texture.cpp camera.cpp mesh.cpp)
 
 ADD_EXECUTABLE(project ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(project glfw)
