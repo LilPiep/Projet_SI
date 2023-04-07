@@ -132,11 +132,11 @@ int main(){
     // Texture
 
     Texture textures[]{
-        Texture("rock.jpg", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
+        Texture("rock.jpg", "diffuse", 0)
     };
 
 	Texture islandTextures[]{
-		Texture("grass.jpg", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE),
+		Texture("grass.jpg", "diffuse", 0)
 	};
 
     //------------------------------------------------------------------------------------------------------------------------------------//
