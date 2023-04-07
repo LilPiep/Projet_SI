@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "include/glad/glad.h"
 #include <math.h>
 #include "include/stb/stb_image.h"
@@ -82,21 +84,6 @@ GLuint lightIndices[] =
 	4, 6, 7
 };
 
-//------------------------------------------------------------------------------------------------------------------------------------//
-
-Vertex islandVertices[] =
-{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
-	Vertex{glm::vec3(-5.0f, 0.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(-5.0f, 0.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3( 5.0f, 0.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-	Vertex{glm::vec3( 5.0f, 0.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
-};
-
-GLuint islandIndices[] =
-{
-	0, 1, 2,
-	0, 2, 3,
-};
 
 //------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -129,6 +116,31 @@ int main(){
     glViewport(0, 0, width, height); // The area of the window we want OpenGl to render in from (0,0) to (1920,1080)
 
     //------------------------------------------------------------------------------------------------------------------------------------//
+
+	srand(time(nullptr));
+	const int taille = 8;
+	float randomFloat[taille];
+	for (int i = 0; i < taille; ++i) {
+        randomFloat[i] = static_cast<float>(rand()) / RAND_MAX + 0.5f;
+    }
+
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
+	Vertex islandVertices[] =
+	{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-5.0f * randomFloat[0], 0.0f,  5.0f * randomFloat[1]), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-5.0f * randomFloat[2], 0.0f, -5.0f * randomFloat[3]), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 5.0f * randomFloat[4], 0.0f, -5.0f * randomFloat[5]), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	Vertex{glm::vec3( 5.0f * randomFloat[6], 0.0f,  5.0f * randomFloat[7]), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
+	};
+
+	GLuint islandIndices[] =
+	{
+		0, 1, 2,
+		0, 2, 3,
+	};
+
+	//------------------------------------------------------------------------------------------------------------------------------------//
 
     // Texture
 
