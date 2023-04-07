@@ -15,7 +15,7 @@ public:
 	std::vector <GLuint> indices;
 	std::vector <Texture> textures;
 	// Stores VAO in public so it can be used in the Draw function
-	VAO meshVAO;
+	VAO vao;
 
 	// Init and draw
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures);

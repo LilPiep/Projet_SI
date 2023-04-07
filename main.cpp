@@ -12,6 +12,7 @@
 
 #include "include/shaderClass.h"
 #include "include/mesh.h"
+#include "include/model.h"
 
 const unsigned int width = 1920;
 const unsigned int height = 1080;
@@ -206,6 +207,12 @@ int main(){
 
     //------------------------------------------------------------------------------------------------------------------------------------//
 
+	// Model
+
+	// Model model("modeles/test/scene.gltf");
+
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
     // Print in the console the keys we can use and their functions
     std::cout << "Press ESC to exit" << std::endl;
     std::cout << "Press Z to move forward" << std::endl;  
@@ -234,6 +241,8 @@ int main(){
 		volcano.Draw(shaderProgram, camera);
 		island.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
+
+		// model.Draw(shaderProgram, camera);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
