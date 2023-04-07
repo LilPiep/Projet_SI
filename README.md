@@ -1,6 +1,13 @@
 # Projet_SI
 Projet SI Semestre 8 Polytech 
 
+# A couple links that I used for this project : 
+
+https://www.youtube.com/watch?v=W3gAzLwfIP0
+https://www.youtube.com/watch?v=W3gAzLwfIP0
+https://www.opengl.org/Documentation/Documentation.html
+https://github.com/go-gl/glfw/blob/master/v3.1/glfw/glfw/deps/glad/glad.h
+
 # Project assignment — 3D Graphics Practicals documentation
 
 Note: Please visit this page on a regular basis for possible updates.
