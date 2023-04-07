@@ -19,6 +19,13 @@
 const unsigned int width = 1920;
 const unsigned int height = 1080;
 
+float oscillate(){
+		float amplitude = 0.15f;
+		float frequency = 0.5f;
+		float time = std::fmod(std::time(nullptr), 2.0f * M_PI) * frequency;
+		return 0.95f + amplitude * std::sin(time);
+	};
+
 //------------------------------------------------------------------------------------------------------------------------------------//
 
 Vertex vertices[] =
@@ -30,58 +37,42 @@ Vertex vertices[] =
 
 	Vertex{glm::vec3(-0.5f, 0.0f,  0.5f),     glm::vec3(0.83f, 0.70f, 0.44f), 	 glm::vec3(-0.8f, 0.5f,  0.0f),      glm::vec2(0.0f, 0.0f)},// Left Side
 	Vertex{glm::vec3(-0.5f, 0.0f, -0.5f),     glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(-0.8f, 0.5f,  0.0f),      glm::vec2(5.0f, 0.0f)},
-	Vertex{glm::vec3(0.0f, 0.8f,  0.0f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(-0.8f, 0.5f,  0.0f),      glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(-0.2f, 0.6f,  -0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(-0.8f, 0.5f,  0.0f),      glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(-0.2f, 0.6f,  0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(-0.8f, 0.5f,  0.0f),      glm::vec2(2.5f, 5.0f)},
 
 	Vertex{glm::vec3(-0.5f, 0.0f, -0.5f),     glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, 0.5f, -0.8f),       glm::vec2(5.0f, 0.0f)},// Non-facing side
 	Vertex{glm::vec3(0.5f, 0.0f, -0.5f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, 0.5f, -0.8f),       glm::vec2(0.0f, 0.0f)},  
-	Vertex{glm::vec3(0.0f, 0.8f,  0.0f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f, -0.8f),       glm::vec2(2.5f, 5.0f)},  
+	Vertex{glm::vec3(-0.2f, 0.6f,  -0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f, -0.8f),       glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(0.2f, 0.6f,  -0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f, -0.8f),       glm::vec2(2.5f, 5.0f)},  
 
 	Vertex{glm::vec3(0.5f, 0.0f, -0.5f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.8f, 0.5f,  0.0f),       glm::vec2(0.0f, 0.0f)}, // Right side
 	Vertex{glm::vec3(0.5f, 0.0f,  0.5f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.8f, 0.5f,  0.0f),       glm::vec2(5.0f, 0.0f)}, 
-	Vertex{glm::vec3(0.0f, 0.8f,  0.0f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.8f, 0.5f,  0.0f),       glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(0.2f, 0.6f,  -0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.8f, 0.5f,  0.0f),       glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(0.2f, 0.6f,  0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.8f, 0.5f,  0.0f),       glm::vec2(2.5f, 5.0f)},
 
 	Vertex{glm::vec3(0.5f, 0.0f,  0.5f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, 0.5f,  0.8f),       glm::vec2(5.0f, 0.0f)}, // Facing side
 	Vertex{glm::vec3(-0.5f, 0.0f,  0.5f),     glm::vec3(0.83f, 0.70f, 0.44f), 	 glm::vec3(0.0f, 0.5f,  0.8f),       glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(0.0f, 0.8f,  0.0f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f,  0.8f),       glm::vec2(2.5f, 5.0f)}  
+	Vertex{glm::vec3(-0.2f, 0.6f,  0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f,  0.8f),       glm::vec2(2.5f, 5.0f)},
+	Vertex{glm::vec3(0.2f, 0.6f,  0.2f),      glm::vec3(0.92f, 0.86f, 0.76f),	 glm::vec3(0.0f, 0.5f,  0.8f),       glm::vec2(2.5f, 5.0f)}   
 };
 
 // Indices for vertices order
 GLuint indices[] =
 {
 	0, 1, 2, // Bottom side 
-	0, 2, 3, // Bottom side
-	4, 6, 5, // Left side
-	7, 9, 8, // Non-facing side
-	10, 12, 11, // Right side
-	13, 15, 14 // Facing side
-};
-
-Vertex lightVertices[] =
-{ //     COORDINATES     //
-	Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
-	Vertex{glm::vec3(0.1f, -0.1f, -0.1f)},
-	Vertex{glm::vec3(0.1f, -0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
-	Vertex{glm::vec3(0.1f,  0.1f, -0.1f)},
-	Vertex{glm::vec3(0.1f,  0.1f,  0.1f)}
-};
-
-GLuint lightIndices[] =
-{
-	0, 1, 2,
-	0, 2, 3,
-	0, 4, 7,
-	0, 7, 3,
-	3, 7, 6,
-	3, 6, 2,
-	2, 6, 5,
-	2, 5, 1,
-	1, 5, 4,
-	1, 4, 0,
-	4, 5, 6,
-	4, 6, 7
+	0, 2, 3, 
+	4, 5, 6, // Left side
+	4, 6, 7,
+	5, 6, 7,
+	8, 9, 10, // Non-facing side
+	8, 10, 11,
+	9, 10, 11,
+	12, 13, 14, // Right side
+	12, 14, 15,
+	13, 14, 15,
+	16, 17, 18, // Facing side
+	16, 18, 19,
+	17, 18, 19
 };
 
 
@@ -117,6 +108,8 @@ int main(){
 
     //------------------------------------------------------------------------------------------------------------------------------------//
 
+	// Randomize the islands
+
 	srand(time(nullptr));
 	const int taille = 8;
 	float randomFloat[taille];
@@ -125,6 +118,8 @@ int main(){
     }
 
 	//------------------------------------------------------------------------------------------------------------------------------------//
+
+	// Island
 
 	Vertex islandVertices[] =
 	{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
@@ -142,6 +137,63 @@ int main(){
 
 	//------------------------------------------------------------------------------------------------------------------------------------//
 
+	// Some lava
+
+	Vertex lavaVertices[] =
+	{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-0.7f, 0.01f,  0.7f),     glm::vec3(0.83f, 0.70f, 0.44f), 	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(0.0f, 0.0f)},// Bottom side
+	Vertex{glm::vec3(-0.7f, 0.01f, -0.7f),     glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(0.0f, 5.0f)},     
+	Vertex{glm::vec3(0.7f, 0.01f, -0.7f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(5.0f, 5.0f)}, 
+	Vertex{glm::vec3(0.7f, 0.01f,  0.7f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(5.0f, 0.0f)},
+
+	Vertex{glm::vec3(-0.22f, 0.50f,  0.22f),     glm::vec3(0.83f, 0.70f, 0.44f), 	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(0.0f, 0.0f)},// Bottom side
+	Vertex{glm::vec3(-0.22f, 0.50f, -0.22f),     glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(0.0f, 5.0f)},     
+	Vertex{glm::vec3(0.22f, 0.50f, -0.22f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(5.0f, 5.0f)}, 
+	Vertex{glm::vec3(0.22f, 0.50f,  0.22f),      glm::vec3(0.83f, 0.70f, 0.44f),	 glm::vec3(0.0f, -1.0f, 0.0f),       glm::vec2(5.0f, 0.0f)},
+
+
+	};
+
+	GLuint lavaIndices[] =
+	{
+		0, 1, 2,
+		0, 2, 3,
+		4, 5, 6,
+		4, 6, 7,
+	};
+
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
+	Vertex lightVertices[] =
+	{ //     COORDINATES     //
+		Vertex{glm::vec3(-0.1f, oscillate(),  0.1f)},
+		Vertex{glm::vec3(-0.1f, oscillate(), -0.1f)},
+		Vertex{glm::vec3(0.1f, oscillate(), -0.1f)},
+		Vertex{glm::vec3(0.1f, oscillate(),  0.1f)},
+		Vertex{glm::vec3(-0.1f,  oscillate() + 0.2,  0.1f)},
+		Vertex{glm::vec3(-0.1f,  oscillate() + 0.2, -0.1f)},
+		Vertex{glm::vec3(0.1f,  oscillate() + 0.2, -0.1f)},
+		Vertex{glm::vec3(0.1f,  oscillate() + 0.2,  0.1f)}
+	};
+
+	GLuint lightIndices[] =
+	{
+		0, 1, 2,
+		0, 2, 3,
+		0, 4, 7,
+		0, 7, 3,
+		3, 7, 6,
+		3, 6, 2,
+		2, 6, 5,
+		2, 5, 1,
+		1, 5, 4,
+		1, 4, 0,
+		4, 5, 6,
+		4, 6, 7
+	};
+
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
     // Texture
 
     Texture textures[]{
@@ -149,7 +201,11 @@ int main(){
     };
 
 	Texture islandTextures[]{
-		Texture("grass.jpg", "diffuse", 0)
+		Texture("grass2.jpg", "diffuse", 0)
+	};
+
+	Texture lavaTextures[]{
+		Texture("lava.jpg", "diffuse", 0)
 	};
 
     //------------------------------------------------------------------------------------------------------------------------------------//
@@ -207,6 +263,16 @@ int main(){
 
 	Mesh island(islandVerts, islandInd, islandTex);
 
+	//------------------------------------------------------------------------------------------------------------------------------------//
+
+	// Lava Mesh
+	std::vector <Vertex> lavaVerts(lavaVertices, lavaVertices + sizeof(lavaVertices) / sizeof(Vertex));
+	std::vector <GLuint> lavaInd(lavaIndices, lavaIndices + sizeof(lavaIndices) / sizeof(GLuint));
+	std::vector <Texture> lavaTex(lavaTextures, lavaTextures + sizeof(lavaTextures) / sizeof(Texture));
+
+	Mesh lava(lavaVerts, lavaInd, lavaTex);
+
+
     //------------------------------------------------------------------------------------------------------------------------------------//
 
     glEnable(GL_DEPTH_TEST); // Enable the Depth Buffer, allows us to see objects in front of others 
@@ -252,6 +318,7 @@ int main(){
         // Draws different meshes
 		volcano.Draw(shaderProgram, camera);
 		island.Draw(shaderProgram, camera);
+		lava.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
 
 		// model.Draw(shaderProgram, camera);
